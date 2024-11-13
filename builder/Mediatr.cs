@@ -489,6 +489,19 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
             } while (true);
         }
 
+        {
+            var regex = new Regex(" \\[(.*)?\\]\\((.*)?\\)", RegexOptions.Multiline);
+            var match = regex.Match(content);
+            do
+            {
+                if (!match.Success)
+                    break;
+
+                content = content.Replace(match.Groups[0].Value, $@"<a href=""{match.Groups[2].Value}"">{match.Groups[1].Value}</a>");
+                match = match.NextMatch();
+            } while (true);
+        }
+
         Console.WriteLine(content);
         Console.WriteLine();
     }
