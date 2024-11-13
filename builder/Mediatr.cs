@@ -490,7 +490,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {
-            var regex = new Regex(" \\[(.*?)\]\\((.*?)\\)", RegexOptions.Multiline);
+            var regex = new Regex(" \\[(.*?)\\]\\((.*?)\\)", RegexOptions.Multiline);
             var match = regex.Match(content);
             do
             {
