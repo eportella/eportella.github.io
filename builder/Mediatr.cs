@@ -471,20 +471,23 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {
-            var regex = new Regex(@"^\\n((- .+\\n)+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
+            var ulRegex = new Regex($"{Environment.NewLine}((- .+{Environment.NewLine})+)", RegexOptions.Multiline);
+            var liRegex = new Regex("^- (.+)$");
 
+            var match = ulRegex.Match(content);
             do
             {
-                if(!match.Success)
+                if (!match.Success)
                     break;
 
-                Console.WriteLine($"match.Groups[0].Value vvv\n {match.Groups[0].Value}");
-                Console.WriteLine($"match.Groups[0].Value vvv\n {match.Groups[1].Value}");
-                content = content.Replace(match.Groups[0].Value, $"<ul>{match.Groups[1].Value}</ul>");
+                var li = string.Join(string.Empty, match.Groups[2].Captures.Select(li =>
+                {
+                    return $"<li>{liRegex.Replace(li.Value, "$1")}</li>";
+                }));
 
+                content = content.Replace(match.Groups[0].Value, $"<ul>{li}</ul>");
                 match = match.NextMatch();
-            } while(true);
+            } while (true);
         }
 
         Console.WriteLine(content);
