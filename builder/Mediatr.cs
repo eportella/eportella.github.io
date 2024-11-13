@@ -382,7 +382,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         Console.WriteLine();
         
         {
-            var regex = new Regex("^# (.+)$", RegexOptions.Multiline);
+            var regex = new Regex(@"^# (.+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
@@ -397,7 +397,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {
-            var regex = new Regex("^## (.+)$", RegexOptions.Multiline);
+            var regex = new Regex(@"^## (.+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
@@ -412,7 +412,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {   
-            var regex = new Regex("^### (.+)$", RegexOptions.Multiline);
+            var regex = new Regex(@"^### (.+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
@@ -426,7 +426,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
             } while(true);
         }
 
-        {    var regex = new Regex("^#### (.+)$", RegexOptions.Multiline);
+        {    var regex = new Regex(@"^#### (.+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
@@ -441,7 +441,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {
-            var regex = new Regex("^##### (.+)$", RegexOptions.Multiline);
+            var regex = new Regex(@"^##### (.+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
@@ -456,7 +456,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {
-            var regex = new Regex("^###### (.+)$", RegexOptions.Multiline);
+            var regex = new Regex(@"^###### (.+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
@@ -465,6 +465,21 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
                     break;
 
                 content = content.Replace(match.Groups[0].Value, $"<h6>{match.Groups[1].Value}</h6>");
+
+                match = match.NextMatch();
+            } while(true);
+        }
+
+        {
+            var regex = new Regex(@"^\n(- (.+)\n)+$", RegexOptions.Multiline);
+            var match = regex.Match(content);
+
+            do
+            {
+                if(!match.Success)
+                    break;
+
+                content = content.Replace(match.Groups[0].Value, $"<ul>{match.Groups[1].Value}</ul>");
 
                 match = match.NextMatch();
             } while(true);
