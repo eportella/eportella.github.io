@@ -380,6 +380,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         var content = await reader.ReadToEndAsync();
         Console.WriteLine(content);
         Console.WriteLine();
+
         var regex = new Regex("^# (.+)$", RegexOptions.Multiline);
         var match = regex.Match(content);
 
@@ -389,6 +390,72 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
                 break;
 
             content = content.Replace(match.Groups[0].Value, $"<h1>{match.Groups[1].Value}</h1>");
+
+            match = match.NextMatch();
+        } while(true);
+
+
+        var regex = new Regex("^## (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h2>{match.Groups[1].Value}</h2>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        var regex = new Regex("^### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h3>{match.Groups[1].Value}</h3>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        var regex = new Regex("^#### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h4>{match.Groups[1].Value}</h4>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        var regex = new Regex("^##### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h5>{match.Groups[1].Value}</h5>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        var regex = new Regex("^###### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h6>{match.Groups[1].Value}</h6>");
 
             match = match.NextMatch();
         } while(true);
