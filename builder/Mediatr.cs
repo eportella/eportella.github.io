@@ -480,7 +480,11 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
                 if (!match.Success)
                     break;
 
-                content = content.Replace(match.Groups[0].Value, $"<ul>{string.Join(string.Empty, match.Groups[2].Captures.Select(li => $"<li>{liRegex.Replace(li.Value, "$1")}</li>"))}</ul>");
+                content = content
+                    .Replace(
+                        match.Groups[0].Value, 
+                        $"<ul>{string.Join(string.Empty, match.Groups[2].Captures.Select(li => $"<li>{liRegex.Replace(li.Value, "$1")}</li>"))}</ul>"
+                    );
                 match = match.NextMatch();
             } while (true);
         }
