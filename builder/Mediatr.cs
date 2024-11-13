@@ -389,6 +389,8 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
                 break;
 
             content = content.Replace(match.Groups[0].Value, $"<h1>{match.Groups[1].Value}</h1>");
+            
+            match = match.NextMatch();
         } while(true);
 
         Console.WriteLine(content);
