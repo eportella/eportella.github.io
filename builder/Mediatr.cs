@@ -471,7 +471,7 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
         }
 
         {
-            var regex = new Regex(@"^\\n(- (.+)\\n)+$", RegexOptions.Multiline);
+            var regex = new Regex(@"^\n((- .+\n)+)$", RegexOptions.Multiline);
             var match = regex.Match(content);
 
             do
