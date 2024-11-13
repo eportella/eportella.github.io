@@ -385,10 +385,10 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
 
         do
         {
-            if(!match.Sucess)
+            if(!match.Success)
                 break;
 
-            content = content.Replace(match.Groups[0].value, $"<h1>{match.Groups[1].Value}</h1>");
+            content = content.Replace(match.Groups[0].Value, $"<h1>{match.Groups[1].Value}</h1>");
         } while(true);
 
         Console.WriteLine(content);
