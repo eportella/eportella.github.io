@@ -379,6 +379,11 @@ internal sealed class StringGetdRequestHandler(IMediator mediator) : IRequestHan
     }
 }
 
+internal sealed class HtmlH1StringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+
 internal sealed class HtmlH1StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH1StringBuildRequest, string?>
 {
     static Regex Regex { get; }
