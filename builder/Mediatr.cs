@@ -565,6 +565,31 @@ internal sealed class HtmlUlStringBuildRequestHandler(IMediator mediator) : IReq
     }
 }
 
+internal sealed class HtmlAStringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlAStringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlAStringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlAStringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex(" \\[(.*?)\\]\\((.*?)\\)", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if (!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $@" <a href=""{match.Groups[2].Value}"">{match.Groups[1].Value}</a>");
+            match = match.NextMatch();
+        } while (true);
+
+        return content;
+    }
+}
+
 internal sealed class HtmlStringBuildRequest : IRequest<string>
 {
     public string? @String { get; init; }
@@ -582,19 +607,7 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
         content = await mediator.Send(new HtmlH5StringBuildRequest { @String = content }, cancellationToken);
         content = await mediator.Send(new HtmlH6StringBuildRequest { @String = content }, cancellationToken);
         content = await mediator.Send(new HtmlUlStringBuildRequest { @String = content }, cancellationToken);
-
-        {
-            var regex = new Regex(" \\[(.*?)\\]\\((.*?)\\)", RegexOptions.Multiline);
-            var match = regex.Match(content);
-            do
-            {
-                if (!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, $@" <a href=""{match.Groups[2].Value}"">{match.Groups[1].Value}</a>");
-                match = match.NextMatch();
-            } while (true);
-        }
+        content = await mediator.Send(new HtmlAStringBuildRequest { @String = content }, cancellationToken);
 
         {
             var regex = new Regex($"({Environment.NewLine})+", RegexOptions.Multiline);
