@@ -590,6 +590,31 @@ internal sealed class HtmlAStringBuildRequestHandler(IMediator mediator) : IRequ
     }
 }
 
+internal sealed class HtmlBrStringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlBrStringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlBrStringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlBrStringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex($"({Environment.NewLine})+", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if (!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, "<br />");
+            match = match.NextMatch();
+        } while (true);
+
+        return content;
+    }
+}
+
 internal sealed class HtmlStringBuildRequest : IRequest<string>
 {
     public string? @String { get; init; }
@@ -608,19 +633,7 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
         content = await mediator.Send(new HtmlH6StringBuildRequest { @String = content }, cancellationToken);
         content = await mediator.Send(new HtmlUlStringBuildRequest { @String = content }, cancellationToken);
         content = await mediator.Send(new HtmlAStringBuildRequest { @String = content }, cancellationToken);
-
-        {
-            var regex = new Regex($"({Environment.NewLine})+", RegexOptions.Multiline);
-            var match = regex.Match(content);
-            do
-            {
-                if (!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, "<br />");
-                match = match.NextMatch();
-            } while (true);
-        }
+        content = await mediator.Send(new HtmlBrStringBuildRequest { @String = content }, cancellationToken);
         
         return content;
     }
