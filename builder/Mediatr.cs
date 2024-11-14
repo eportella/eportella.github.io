@@ -389,20 +389,147 @@ internal sealed class HtmlH1StringBuildRequestHandler(IMediator mediator) : IReq
     {
         var content = request.@String;
         
+        var regex = new Regex(@"^# (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
         {
-            var regex = new Regex(@"^# (.+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
+            if(!match.Success)
+                break;
 
-            do
-            {
-                if(!match.Success)
-                    break;
+            content = content.Replace(match.Groups[0].Value, $"<h1>{match.Groups[1].Value}</h1>");
 
-                content = content.Replace(match.Groups[0].Value, $"<h1>{match.Groups[1].Value}</h1>");
+            match = match.NextMatch();
+        } while(true);
 
-                match = match.NextMatch();
-            } while(true);
-        }
+        return content;
+    }
+}
+
+internal sealed class HtmlH2StringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlH2StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH2StringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlH2StringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex(@"^## (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h2>{match.Groups[1].Value}</h2>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        return content;
+    }
+}
+
+internal sealed class HtmlH3StringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlH3StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH3StringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlH3StringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex(@"^### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h3>{match.Groups[1].Value}</h3>");
+
+            match = match.NextMatch();
+        } while(true);
+    
+        return content;
+    }
+}
+
+internal sealed class HtmlH4StringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlH4StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH4StringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlH4StringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex(@"^#### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h4>{match.Groups[1].Value}</h4>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        return content;
+    }
+}
+
+internal sealed class HtmlH5StringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlH5StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH5StringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlH5StringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex(@"^##### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h5>{match.Groups[1].Value}</h5>");
+
+            match = match.NextMatch();
+        } while(true);
+
+        return content;
+    }
+}
+
+internal sealed class HtmlH6StringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlH6StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH6StringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlH6StringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var regex = new Regex(@"^###### (.+)$", RegexOptions.Multiline);
+        var match = regex.Match(content);
+        do
+        {
+            if(!match.Success)
+                break;
+
+            content = content.Replace(match.Groups[0].Value, $"<h6>{match.Groups[1].Value}</h6>");
+
+            match = match.NextMatch();
+        } while(true);
 
         return content;
     }
@@ -419,81 +546,11 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
         var content = request.@String;
         
         content = await mediator.Send(new HtmlH1StringBuildRequest { @String = content }, cancellationToken);
-        
-
-        {
-            var regex = new Regex(@"^## (.+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
-
-            do
-            {
-                if(!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, $"<h2>{match.Groups[1].Value}</h2>");
-
-                match = match.NextMatch();
-            } while(true);
-        }
-
-        {   
-            var regex = new Regex(@"^### (.+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
-
-            do
-            {
-                if(!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, $"<h3>{match.Groups[1].Value}</h3>");
-
-                match = match.NextMatch();
-            } while(true);
-        }
-
-        {    var regex = new Regex(@"^#### (.+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
-
-            do
-            {
-                if(!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, $"<h4>{match.Groups[1].Value}</h4>");
-
-                match = match.NextMatch();
-            } while(true);
-        }
-
-        {
-            var regex = new Regex(@"^##### (.+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
-
-            do
-            {
-                if(!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, $"<h5>{match.Groups[1].Value}</h5>");
-
-                match = match.NextMatch();
-            } while(true);
-        }
-
-        {
-            var regex = new Regex(@"^###### (.+)$", RegexOptions.Multiline);
-            var match = regex.Match(content);
-
-            do
-            {
-                if(!match.Success)
-                    break;
-
-                content = content.Replace(match.Groups[0].Value, $"<h6>{match.Groups[1].Value}</h6>");
-
-                match = match.NextMatch();
-            } while(true);
-        }
+        content = await mediator.Send(new HtmlH2StringBuildRequest { @String = content }, cancellationToken);
+        content = await mediator.Send(new HtmlH3StringBuildRequest { @String = content }, cancellationToken);
+        content = await mediator.Send(new HtmlH4StringBuildRequest { @String = content }, cancellationToken);
+        content = await mediator.Send(new HtmlH5StringBuildRequest { @String = content }, cancellationToken);
+        content = await mediator.Send(new HtmlH6StringBuildRequest { @String = content }, cancellationToken);
 
         {
             var ulRegex = new Regex($"{Environment.NewLine}((- .+{Environment.NewLine})+)", RegexOptions.Multiline);
