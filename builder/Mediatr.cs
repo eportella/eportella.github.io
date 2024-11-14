@@ -510,6 +510,19 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
                 match = match.NextMatch();
             } while (true);
         }
+
+        {
+            var regex = new Regex("({Environment.NewLine})+", RegexOptions.Multiline);
+            var match = regex.Match(content);
+            do
+            {
+                if (!match.Success)
+                    break;
+
+                content = content.Replace(match.Groups[0].Value, $@"{match.Groups[2].Value}<br />");
+                match = match.NextMatch();
+            } while (true);
+        }
         
         return content;
     }
