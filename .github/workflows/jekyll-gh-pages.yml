@@ -26,16 +26,10 @@ jobs:
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
-          destination: ./_jekyll
-      - name: Build with Portella
-        run: |
-          cd builder
-          dotnet build -c Release
-          dotnet run
+          destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
   deploy:
-    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
