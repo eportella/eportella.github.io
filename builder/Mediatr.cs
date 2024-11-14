@@ -512,7 +512,7 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
         }
 
         {
-            var regex = new Regex("({Environment.NewLine})+", RegexOptions.Multiline);
+            var regex = new Regex($"({Environment.NewLine})+", RegexOptions.Multiline);
             var match = regex.Match(content);
             do
             {
