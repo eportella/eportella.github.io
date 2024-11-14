@@ -379,14 +379,13 @@ internal sealed class StringGetdRequestHandler(IMediator mediator) : IRequestHan
     }
 }
 
-internal sealed class HtmlStringBuildRequest : IRequest<string>
+internal sealed class HtmlH1StringBuildRequest : IRequest<string>
 {
     public string? @String { get; init; }
-    //public FileInfo? FileInfoTarget { get; init; }
 }
-internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlStringBuildRequest, string?>
+internal sealed class HtmlH1StringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlH1StringBuildRequest, string?>
 {
-    public async Task<string?> Handle(HtmlStringBuildRequest request, CancellationToken cancellationToken)
+    public async Task<string?> Handle(HtmlH1StringBuildRequest request, CancellationToken cancellationToken)
     {
         var content = request.@String;
         
@@ -404,6 +403,23 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
                 match = match.NextMatch();
             } while(true);
         }
+
+        return content;
+    }
+}
+
+internal sealed class HtmlStringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlStringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlStringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+        
+        content = await mediator(new HtmlH1StringBuildRequest { @String = content }, cancellationToken);
+        
 
         {
             var regex = new Regex(@"^## (.+)$", RegexOptions.Multiline);
