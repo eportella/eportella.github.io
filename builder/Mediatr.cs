@@ -418,7 +418,7 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
     {
         var content = request.@String;
         
-        content = await mediator(new HtmlH1StringBuildRequest { @String = content }, cancellationToken);
+        content = await mediator.Send(new HtmlH1StringBuildRequest { @String = content }, cancellationToken);
         
 
         {
