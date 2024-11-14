@@ -366,20 +366,29 @@ internal sealed class BuildRequestHandler(IMediator mediator) : IRequestHandler<
     }
 }
 
-internal sealed class LogRequest : IRequest
+internal sealed class StringGetdRequest : IRequest<string?>
 {
     public FileInfo? FileInfo { get; init; }
 }
-internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<LogRequest>
+internal sealed class StringGetdRequestHandler(IMediator mediator) : IRequestHandler<StringGetdRequest, string?>
 {
-    public async Task Handle(LogRequest request, CancellationToken cancellationToken)
+    public async Task<string?> Handle(StringGetdRequest request, CancellationToken cancellationToken)
     {
-        Console.WriteLine();
-        Console.WriteLine($"LOG->'{request.FileInfo.FullName}'");
         using var reader = request.FileInfo.OpenText();
-        var content = await reader.ReadToEndAsync();
-        Console.WriteLine(content);
-        Console.WriteLine();
+        return await reader.ReadToEndAsync();
+    }
+}
+
+internal sealed class HtmlStringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+    //public FileInfo? FileInfoTarget { get; init; }
+}
+internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlStringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlStringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
         
         {
             var regex = new Regex(@"^# (.+)$", RegexOptions.Multiline);
@@ -501,7 +510,26 @@ internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<Lo
                 match = match.NextMatch();
             } while (true);
         }
+        
+        return content;
+    }
+}
 
+internal sealed class LogRequest : IRequest
+{
+    public FileInfo? FileInfo { get; init; }
+}
+internal sealed class LogRequestHandler(IMediator mediator) : IRequestHandler<LogRequest>
+{
+    public async Task Handle(LogRequest request, CancellationToken cancellationToken)
+    {
+        Console.WriteLine();
+        Console.WriteLine($"LOG->'{request.FileInfo.FullName}'");
+        
+        var content = await mediator.Send(new StringGetdRequest { FileInfo = request.FileInfo }, cancellationToken);
+        Console.WriteLine(content);
+        Console.WriteLine();
+        content = await mediator.Send(new HtmlStringBuildRequest { @String = content}, cancellationToken );
         Console.WriteLine(content);
         Console.WriteLine();
     }
