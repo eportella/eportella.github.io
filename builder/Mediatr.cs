@@ -519,7 +519,7 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
                 if (!match.Success)
                     break;
 
-                content = content.Replace(match.Groups[0].Value, $@"{match.Groups[1].Value}<br />");
+                content = content.Replace(match.Groups[0].Value, "<br />");
                 match = match.NextMatch();
             } while (true);
         }
