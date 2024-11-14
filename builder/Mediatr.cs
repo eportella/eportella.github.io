@@ -535,6 +535,36 @@ internal sealed class HtmlH6StringBuildRequestHandler(IMediator mediator) : IReq
     }
 }
 
+internal sealed class HtmlUlStringBuildRequest : IRequest<string>
+{
+    public string? @String { get; init; }
+}
+internal sealed class HtmlUlStringBuildRequestHandler(IMediator mediator) : IRequestHandler<HtmlUlStringBuildRequest, string?>
+{
+    public async Task<string?> Handle(HtmlUlStringBuildRequest request, CancellationToken cancellationToken)
+    {
+        var content = request.@String;
+
+        var ulRegex = new Regex($"{Environment.NewLine}((- .+{Environment.NewLine})+)", RegexOptions.Multiline);
+        var liRegex = new Regex("^- (.+)$");
+        var match = ulRegex.Match(content);
+        do
+        {
+            if (!match.Success)
+                break;
+
+            content = content
+                .Replace(
+                    match.Groups[0].Value, 
+                    $"<ul>{string.Join(string.Empty, match.Groups[2].Captures.Select(li => $"<li>{liRegex.Replace(li.Value, "$1")}</li>"))}</ul>"
+                );
+            match = match.NextMatch();
+        } while (true);        
+
+        return content;
+    }
+}
+
 internal sealed class HtmlStringBuildRequest : IRequest<string>
 {
     public string? @String { get; init; }
@@ -551,25 +581,7 @@ internal sealed class HtmlStringBuildRequestHandler(IMediator mediator) : IReque
         content = await mediator.Send(new HtmlH4StringBuildRequest { @String = content }, cancellationToken);
         content = await mediator.Send(new HtmlH5StringBuildRequest { @String = content }, cancellationToken);
         content = await mediator.Send(new HtmlH6StringBuildRequest { @String = content }, cancellationToken);
-
-        {
-            var ulRegex = new Regex($"{Environment.NewLine}((- .+{Environment.NewLine})+)", RegexOptions.Multiline);
-            var liRegex = new Regex("^- (.+)$");
-
-            var match = ulRegex.Match(content);
-            do
-            {
-                if (!match.Success)
-                    break;
-
-                content = content
-                    .Replace(
-                        match.Groups[0].Value, 
-                        $"<ul>{string.Join(string.Empty, match.Groups[2].Captures.Select(li => $"<li>{liRegex.Replace(li.Value, "$1")}</li>"))}</ul>"
-                    );
-                match = match.NextMatch();
-            } while (true);
-        }
+        content = await mediator.Send(new HtmlUlStringBuildRequest { @String = content }, cancellationToken);
 
         {
             var regex = new Regex(" \\[(.*?)\\]\\((.*?)\\)", RegexOptions.Multiline);
