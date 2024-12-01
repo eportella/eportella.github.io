@@ -23,7 +23,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with portella
-        uses: /eportella/markdown-to-html-builder@latest
+        uses: /eportella/markdown-to-html-builder@main
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
   deploy:
