@@ -22,11 +22,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
+      - name: Build with portella
+        uses: /eportella/markdown-to-html-builder@latest
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
   deploy:
