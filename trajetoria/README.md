@@ -10,7 +10,7 @@
 - Dos 27 até 30 anos atuei como Analista e desenvolvedor de *softwares*[^5];
 - Por fim a partir dos 30 anos passei a complementar minha carreira coesistindo *softwares* com empreendedorismo atravéz da [Portella LTDA](https://portella-ltda.github.io/);
 
-Hoje eu tenho `[IDADE]:1985-06-28` anos onde `[IDADE]:1995-06-28` desde o primeiro contato com computadores, `[IDADE]:2001-01-01` de experiência profissional sendo `[IDADE]:2012-01-01` específico em tecnologia.
+Hoje eu tenho `[age-calc]:1985-06-28` anos onde `[age-calc]:1995-06-28` desde o primeiro contato com computadores, `[age-calc]:2001-01-01` de experiência profissional sendo `[age-calc]:2012-01-01` específico em tecnologia.
 
 
 [^1]: Meu primeiro contato com "programação" e não sabia muito o que fazer com aquilo.
