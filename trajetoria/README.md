@@ -13,7 +13,7 @@
 Hoje eu tenho `[age-calc]:1985-06-28` anos onde `[age-calc]:1995-06-28` desde o primeiro contato com computadores, `[age-calc]:2001-01-01` de experiência profissional sendo `[age-calc]:2012-01-01` específico em tecnologia.
 
 >[!TIP]
->Continue conhecendo a minha trajetória através [Portella LTDA](https://portella-ltda.github.io/trajetoria/)
+>Continue conhecendo a minha trajetória através da [Portella LTDA](https://portella-ltda.github.io/trajetoria/)
 
 [^1]: Meu primeiro contato com "programação" e não sabia muito o que fazer com aquilo.
 [^2]: Segundo contato com programação, eu estava com outros focos na vida.
